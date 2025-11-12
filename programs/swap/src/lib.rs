@@ -5,7 +5,7 @@ use anchor_spl::{
     token::{Mint, Token},
 };
 
-declare_id!("BUNi68phLfzQEQLLxHSPoodcgUMQJzsEshENP2dDKy4a");
+declare_id!("A1EZcBU7bzWFS7LQosfhtNbvGcAG4j9Ff1oCWDnKLhKf");
 declare_program!(raydium_launchpad);
 
 use crate::raydium_launchpad::{program::RaydiumLaunchpad,cpi::{accounts::InitializeV2,initialize_v2}};
@@ -94,12 +94,6 @@ pub struct Initialize<'info> {
     pub global_config:AccountInfo<'info>,
 
     ///CHECK: Platform Config from raydium launchpad program
-    #[account(
-        mut,
-        seeds=[PLATFORM_CONFIG_SEED,user.key().as_ref()],
-        seeds::program=raydium_launchpad_program.key(),
-        bump,
-    )]
     pub platform_config:AccountInfo<'info>,
 
     /// CHECK: raydium authority
@@ -120,8 +114,9 @@ pub struct Initialize<'info> {
     )]
     pub pool_state:AccountInfo<'info>,
 
+    #[account(mut)]
+    pub base_token_mint:Signer<'info>,
     pub quote_token_mint:Account<'info, Mint>,
-    pub base_token_mint:Account<'info, Mint>,
 
     /// CHECK base vault checked by raydium
     #[account(
